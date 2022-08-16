@@ -1,9 +1,11 @@
 name: ref sha test
 
+
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   sha-ref-test:
@@ -11,4 +13,9 @@ jobs:
     steps:
       - name: check sha and ref
         run: |
-          echo "${GITHUB_REF#refs/heads/}-$(git rev-parse --short '$GITHUB_SHA')"
+          echo '1' $GITHUB_REF
+          echo '2' ${{ github.ref }}
+          echo '3' ${{ github.ref_name }}
+          echo '4' ${{ github.head_ref }}
+          echo '5' ${{ github.base_ref }}
+          echo '6' ${{ github.sha }}
