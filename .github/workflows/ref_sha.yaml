@@ -1,0 +1,14 @@
+name: ref sha test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sha-ref-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check sha and ref
+        run: |
+          echo "${{ github.sha }} - ${{ github.ref }}"
