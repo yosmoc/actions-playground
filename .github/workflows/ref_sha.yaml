@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: check sha and ref
         run: |
-          echo "${{ github.head_ref }} - ${{ github.sha }}"
+          echo "${GITHUB_REF#refs/heads/}-$(git rev-parse --short '$GITHUB_SHA')"
