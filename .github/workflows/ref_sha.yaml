@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: check sha and ref
         run: |
-          echo "${{ github.sha }} - ${{ github.ref }}"
+          echo "${{ github.head_ref }} - ${{ github.sha }}"
