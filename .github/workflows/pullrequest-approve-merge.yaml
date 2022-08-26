@@ -1,0 +1,39 @@
+name: pull request approve and merge test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pull-request-approve-merge-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get timestamp
+      id: timestamp
+      run: echo "::set-output name=timestamp::$(date +'%Y-%m-%dT%H-%M-%S')"
+    - name: Create branch
+      uses: peterjgrainger/action-create-branch@v2.2.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        branch: 'test-branch-${{ steps.timestamp.outputs.timestamp }}'
+    - name: Create dummy file
+      run: touch '${{ steps.timestamp.outputs.timestamp }}.txt'
+    - name: Commit and push
+      uses: EndBug/add-and-commit@v9
+      with:
+        author_name: Github Action
+        author_email: github@action.com
+        message: 'test commit'
+        add: '${{ steps.timestamp.outputs.timestamp }}.txt'
+        new_branch: 'test-branch-${{ steps.timestamp.outputs.timestamp }}'
+    - name: Create pull request
+      uses: vsoch/pull-request-action@1.0.19
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PULL_REQUEST_BRANCH: main
+        PULL_REQUEST_FROM_BRANCH: test-branch-${{ steps.timestamp.outputs.timestamp }}
+        PULL_REQUEST_TITLE: Test pull request ${{ steps.timestamp.outputs.timestamp }}
+    - name: Approve PR
+      run: gh pr review 'test-branch-${{ steps.timestamp.outputs.timestamp }}' --approve
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
