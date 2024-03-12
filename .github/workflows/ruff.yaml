@@ -1,0 +1,27 @@
+name: Ruff Check
+on:
+  push:
+    branches:
+      - ruff_check
+
+jobs:
+  ruff-check:
+    name: Ruff Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: ruff format
+        uses: chartboost/ruff-action@17a2e52c3262dd15ae477348fdeac57ebc4ece41
+        with:
+          src: "./src"
+          mode: "format"
+          args: "-v"
+          version: 0.2.2
+      - name: ruff check
+        uses: chartboost/ruff-action@17a2e52c3262dd15ae477348fdeac57ebc4ece41
+        with:
+          src: "./src"
+          mode: "check"
+          args: "-v"
+          version: 0.2.2
