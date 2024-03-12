@@ -2,7 +2,7 @@ name: Ruff Check
 on:
   push:
     branches:
-      - main
+      - ruff_check
 
 jobs:
   ruff-check:
